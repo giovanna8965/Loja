@@ -12,7 +12,7 @@ Certifique-se de ter o Python 3.7+ instalado em sua máquina. Recomendamos o uso
 
 Crie um ambiente virtual para o projeto usando o código:
 
-python -m venv myenv
+ python -m venv myenv
 
 
 2. Instalar Dependências
