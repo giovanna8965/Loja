@@ -30,24 +30,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
-# Configurar estilo de visualização do Seaborn
-sns.set(style="whitegrid")
-
 # Carregar dados (Substitua os caminhos pelos seus arquivos de dados)
 vendas = pd.read_csv('vendas.csv')
 clientes = pd.read_csv('clientes.csv')
 marketing = pd.read_csv('marketing.csv')
 
-# Tratar dados (conversão de data e remoção de nulos)
-vendas['data_venda'] = pd.to_datetime(vendas['data_venda'])
-vendas.dropna(inplace=True)
-clientes.dropna(inplace=True)
-marketing.dropna(inplace=True)
-
-# Análises
-vendas_por_categoria = vendas.groupby('categoria')['quantidade'].sum().reset_index()
-vendas['mes'] = vendas['data_venda'].dt.to_period('M')
-vendas_por_mes = vendas.groupby('mes')['quantidade'].sum().reset_index()
 
 # Título do Dashboard
 st.title('Dashboard de Vendas da Empresa de Tênis')
@@ -89,23 +76,6 @@ X = vendas_por_mes['mes'].apply(lambda x: x.ordinal).values.reshape(-1, 1)
 y = vendas_por_mes['quantidade'].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Treinar modelo
-modelo = LinearRegression()
-modelo.fit(X_train, y_train)
-
-# Prever no conjunto de teste
-y_pred = modelo.predict(X_test)
-mse = mean_squared_error(y_test, y_pred)
-
-st.header('Previsão de Vendas')
-st.write(f'Erro Quadrático Médio: {mse}')
-fig3, ax3 = plt.subplots(figsize=(12, 6))
-sns.lineplot(x=X_test.flatten(), y=y_test, label='Dados Reais', ax=ax3)
-sns.lineplot(x=X_test.flatten(), y=y_pred, label='Previsão', ax=ax3)
-ax3.set_title('Previsão de Vendas')
-ax3.set_xlabel('Mês')
-ax3.set_ylabel('Quantidade Vendida')
-st.pyplot(fig3)
 
 2. Executar o Dashboard
    
